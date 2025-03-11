@@ -1,12 +1,16 @@
 public class LazyInitializedSingleton {
 
-    private static LazyInitializedSingleton instance;
+    private static volatile LazyInitializedSingleton instance;
 
-    private LazyInitializedSingleton(){}
+    private LazyInitializedSingleton() {}
 
     public static LazyInitializedSingleton getInstance() {
         if (instance == null) {
-            instance = new LazyInitializedSingleton();
+            synchronized (LazyInitializedSingleton.class) {
+                if (instance == null) {
+                    instance = new LazyInitializedSingleton();
+                }
+            }
         }
         return instance;
     }
